@@ -1,0 +1,64 @@
+project_name: jsonic-cli
+release:
+  github:
+    owner: jsonic
+    name: jsonic-cli
+  prerelease: auto
+  draft: false
+  name_template: "jsonic-cli {{.Version}}"
+before:
+  hooks:
+    - go mod tidy
+env:
+  - RELEASE_BUILDS=dist/jsonic-cli_darwin_amd64/jsonic-cli dist/jsonic-cli_darwin_arm64/jsonic-cli dist/jsonic-cli_linux_386/jsonic-cli dist/jsonic-cli_linux_amd64/jsonic-cli dist/jsonic-cli_windows_386/jsonic-cli.exe dist/jsonic-cli_windows_amd64/jsonic-cli.exe
+builds:
+  - env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.buildVersion={{.Version}}
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm64
+    targets:
+      - linux_amd64
+      - linux_arm64
+      - windows_amd64
+      - windows_arm64
+      - darwin_amd64
+      - darwin_arm64
+    hooks:
+      post: make pack-releases
+    ignore:
+      - goos: darwin
+        goarch: 386
+archives:
+  - replacements:
+      darwin: macOS
+      386: i386
+      linux: linux
+      amd64: x86_64
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+brews:
+  - name: jsonic-cli
+    tap:
+      owner: athul
+      name: homebrew-tap
+      token: "{{ .Env.HB_TOKEN }}"
+    folder: Formula
+    homepage: "https://github.com/jsonic-co/jsonic-cli"
+    description: "CLI for Jsonic.io"
+    install: bin.install "jsonic-cli"
