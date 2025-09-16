@@ -10,7 +10,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
-	github.com/tidwall/pretty v1.2.0
+	github.com/tidwall/pretty v1.2.1
 	github.com/urfave/cli v1.22.5
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
 	go.uber.org/atomic v1.9.0 // indirect
